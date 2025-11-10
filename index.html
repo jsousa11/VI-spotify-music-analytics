@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spotify Music Analytics</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- D3.js v7 from CDN -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+<script>
+    // Debug: ver se os dados carregam
+    window.addEventListener('load', () => {
+        setTimeout(() => {
+            console.log('📊 App State:', appState);
+            console.log('🎵 Sample track:', appState.data[0]);
+        }, 2000);
+    });
+</script>
+
+<body>
+    <div class="container">
+        <!-- Sidebar com filtros -->
+        <aside class="sidebar">
+            <h2>Filters</h2>
+            
+            <!-- Filtro por género -->
+            <div class="filter-group">
+                <h3>Genre</h3>
+                <div id="genre-filters"></div>
+            </div>
+            
+            <!-- Filtro por popularidade -->
+            <div class="filter-group">
+                <h3>Popularity</h3>
+                <input type="range" id="popularity-slider" min="0" max="100" value="0">
+                <span id="popularity-value">0+</span>
+            </div>
+            
+            <!-- Pesquisa de artista -->
+            <div class="filter-group">
+                <h3>Artist</h3>
+                <input type="text" id="artist-search" placeholder="Search artist...">
+            </div>
+            
+            <button id="reset-filters">Reset Filters</button>
+        </aside>
+        
+        <!-- Área principal com as 3 visualizações -->
+        <main class="main-content">
+            <header>
+                <h1>Spotify Music Analytics</h1>
+                <p>Exploring 99 years of musical evolution (1921–2020)</p>
+            </header>
+            
+            <!-- Card 1: Scatterplot -->
+            <section class="visualization-card">
+                <h2>Energy vs. Danceability by Genre</h2>
+                <div id="scatterplot"></div>
+                <div id="scatter-tooltip" class="tooltip"></div>
+            </section>
+            
+            <!-- Card 2: Timeline -->
+            <section class="visualization-card">
+                <h2>Genre Evolution Over Time</h2>
+                <div id="timeline"></div>
+            </section>
+            
+            <!-- Card 3: Radar Chart -->
+            <section class="visualization-card">
+                <h2>Artist Profile Comparison</h2>
+                <div id="artist-select">
+                    <!-- Será preenchido dinamicamente -->
+                </div>
+                <div id="radar-chart"></div>
+            </section> 
+        </main>
+    </div>
+    
+    <!-- Scripts D3 -->
+    <script src="js/utils.js"></script>
+    <script src="js/filters.js"></script>
+    <script src="js/scatterplot.js"></script>
+    <script src="js/timeline.js"></script>
+    <script src="js/radar.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
