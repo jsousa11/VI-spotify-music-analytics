@@ -137,20 +137,14 @@ function parseMainData(d) {
 // Carregar TODOS os datasets
 async function loadData() {
     try {
-        console.log('📥 Loading datasets...');
         
         // FETCH manual do CSV e parsear com delimitador ;
         const response = await fetch('data/Best Songs on Spotify from 2000-2023.csv');
         const csvText = await response.text();
-        
-        console.log('📄 First 200 chars of CSV:', csvText.substring(0, 200));
-        
+                
         // IMPORTANTE: usar d3.dsvFormat(';') para ponto e vírgula
         const parser = d3.dsvFormat(';');
         const rawData = parser.parse(csvText);
-        
-        console.log('🔍 First raw row:', rawData[0]);
-        console.log('🔍 Columns:', Object.keys(rawData[0]));
         
         // Parse manual dos dados
         appState.data = rawData.map(d => ({
@@ -185,11 +179,6 @@ async function loadData() {
         appState.filteredData = appState.data;
         appState.yearRange = [2000, 2023];
         
-        console.log(`✅ Loaded ${appState.data.length} tracks (2000-2023)`);
-        console.log(`🎵 Sample track:`, appState.data[0]);
-        console.log(`🎵 Sample genres:`, appState.data.slice(0, 10).map(d => d.genre));
-        console.log(`🎵 Unique genres:`, [...new Set(appState.data.map(d => d.genre))].slice(0, 30));
-        
         // Inicializar visualizações
         initializeFilters();
         createScatterplot();
@@ -197,7 +186,7 @@ async function loadData() {
         createRadarChart();
         
     } catch (error) {
-        console.error('❌ Error loading data:', error);
+        console.error('Error loading data:', error);
         alert('Erro ao carregar dados: ' + error.message);
     }
 }
@@ -212,8 +201,6 @@ function updateAllVisualizations() {
         
         return genreMatch && popularityMatch && yearMatch;
     });
-    
-    console.log(`🔄 Filtered: ${appState.filteredData.length} tracks`);
     
     updateScatterplot();
     updateTimeline();

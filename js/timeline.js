@@ -19,8 +19,7 @@ function createTimeline() {
     
     // Preparar dados agregados por ano e género
     const topGenres = getTopGenresByCount(appState.data, 8); // Top 8 géneros
-    console.log('📊 Top genres for timeline:', topGenres);
-    
+
     // Agrupar por ano e género
     const dataByYear = d3.rollups(
         appState.filteredData.filter(d => topGenres.includes(d.genre)),
@@ -167,8 +166,6 @@ function brushed(event) {
         Math.round(timelineXScale.invert(x1))
     ];
     
-    console.log('🔍 Brush range:', newRange);
-    
     appState.yearRange = newRange;
     
     // Atualizar display do filtro
@@ -194,16 +191,12 @@ function getTopGenresByCount(data, n = 8) {
         d => d.genre    // Agrupar por género
     );
     
-    console.log('📊 Genre counts (raw):', [...genreCounts.entries()].slice(0, 10));
-    
     // Ordenar e pegar top N
     const topGenres = [...genreCounts.entries()]
         .filter(([genre, count]) => genre && genre !== 'unknown' && genre.length > 2)
         .sort((a, b) => b[1] - a[1])  // Ordenar por contagem decrescente
         .slice(0, n)
         .map(([genre, count]) => genre);
-    
-    console.log('📊 Top genres selected:', topGenres);
     
     // FALLBACK
     if (topGenres.length === 0) {

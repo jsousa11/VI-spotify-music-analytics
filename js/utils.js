@@ -10,21 +10,11 @@ function getUniqueGenres(data) {
         // Limpar e normalizar
         const cleanGenre = d.genre.toLowerCase().trim();
         
-        // OPÇÃO 1: Manter géneros compostos inteiros (recomendado)
         genres.add(cleanGenre);
-        
-        // OPÇÃO 2: Se quiseres separar "pop rap" em ["pop", "rap"]
-        // const parts = cleanGenre.split(/[\s-]+/);
-        // parts.forEach(part => {
-        //     if (part.length > 2) genres.add(part);
-        // });
     });
     
     const uniqueGenres = [...genres].sort();
-    
-    console.log(`🎵 Total unique genres found: ${uniqueGenres.length}`);
-    console.log('🎵 First 20 genres:', uniqueGenres.slice(0, 20));
-    
+
     return uniqueGenres;
 }
 

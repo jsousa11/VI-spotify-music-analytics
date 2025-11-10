@@ -1,8 +1,6 @@
 function initializeFilters() {
     const allGenres = getUniqueGenres(appState.data);
-    
-    console.log('🎵 All unique genres:', allGenres.length, allGenres.slice(0, 20));
-    
+        
     // Limitar a top 20 géneros mais comuns (por contagem)
     const genreCount = d3.rollup(
         appState.data,
@@ -15,7 +13,6 @@ function initializeFilters() {
         .slice(0, 20)
         .map(d => d[0]);
     
-    console.log('🎵 Genres found:', topGenres);
     
     // Criar checkboxes de géneros
     const genreContainer = d3.select('#genre-filters');
