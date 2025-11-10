@@ -5,7 +5,6 @@ function createScatterplot() {
     const width = 800 - margin.left - margin.right;
     const height = 400 - margin.top - margin.bottom;
     
-    // Criar SVG
     scatterSvg = d3.select('#scatterplot')
         .append('svg')
         .attr('width', width + margin.left + margin.right)
@@ -96,7 +95,6 @@ function updateScatterplot() {
         .attr('cy', d => scatterYScale(d.energy))
         .attr('fill', d => genreColors[d.genre] || '#888');
     
-    // Exit
     circles.exit()
         .transition()
         .duration(300)

@@ -1,7 +1,6 @@
-// Configurar d3 para aceitar `;` como delimitador
-d3.dsvFormat(';'); // Para "Best Songs 2000-2023.csv"
+d3.dsvFormat(';');
 
-// Mapeamento de cores base
+//Cores dos generos
 const genreColorsBase = {
     'pop': '#E91E63',
     'rock': '#9C27B0',
@@ -31,25 +30,21 @@ const genreColorsBase = {
     'house': '#00BCD4'
 };
 
-// Função para obter cor de género (com fallback inteligente)
 function getGenreColor(genre) {
     if (!genre) return '#888';
     
     const normalized = genre.toLowerCase().trim();
     
-    // 1. Tentar match exato
     if (genreColorsBase[normalized]) {
         return genreColorsBase[normalized];
     }
     
-    // 2. Tentar match parcial (ex: "dance pop" → "pop")
     for (let key in genreColorsBase) {
         if (normalized.includes(key) || key.includes(normalized)) {
             return genreColorsBase[key];
         }
     }
     
-    // 3. Hash de cor baseado no nome (consistente)
     let hash = 0;
     for (let i = 0; i < normalized.length; i++) {
         hash = normalized.charCodeAt(i) + ((hash << 5) - hash);
@@ -59,12 +54,10 @@ function getGenreColor(genre) {
     return `hsl(${hue}, 70%, 55%)`;
 }
 
-// Substituir genreColors global
 const genreColors = new Proxy({}, {
     get: (target, prop) => getGenreColor(prop)
 });
 
-// Estado global da aplicação
 const appState = {
     data: [],
     filteredData: [],
@@ -76,7 +69,6 @@ const appState = {
     yearRange: [2000, 2023]
 };
 
-// Parser para "Best Songs 2000-2023" (separador: ;)
 function parseBestSongs(d) {
     return {
         id: Math.random().toString(),
@@ -86,12 +78,12 @@ function parseBestSongs(d) {
         genre: (d['top genre'] || 'pop').toLowerCase().trim(),
         popularity: +d.popularity || 50,
         // Valores em % (dividir por 100)
-        danceability: +d['danceability '] / 100 || 0.5, // Nota: tem espaço!
+        danceability: +d['danceability '] / 100 || 0.5,
         energy: +d.energy / 100 || 0.5,
         acousticness: +d.acousticness / 100 || 0.5,
         valence: +d.valence / 100 || 0.5,
-        speechiness: +d['speechiness '] / 100 || 0, // Nota: tem espaço!
-        instrumentalness: 0, // Não existe neste CSV
+        speechiness: +d['speechiness '] / 100 || 0,
+        instrumentalness: 0,
         loudness: +d.dB || -10,
         tempo: +d.bpm || 120,
         liveness: +d.liveness / 100 || 0.1,
@@ -99,18 +91,14 @@ function parseBestSongs(d) {
     };
 }
 
-// Parser para "data.csv" (separador: ,)
 function parseMainData(d) {
-    // Extrair primeiro género do array JSON
     let genre = 'pop';
     try {
         if (d.artists && d.artists.includes('[')) {
-            // É um array JSON, mas vamos usar o primeiro artista
             const artistArray = JSON.parse(d.artists.replace(/'/g, '"'));
-            // Para genre, não existe neste formato, usar default
         }
     } catch (e) {
-        // Ignorar erros de parse
+
     }
     
     return {
@@ -118,9 +106,8 @@ function parseMainData(d) {
         name: d.name || 'Unknown',
         artist: d.artists ? d.artists.replace(/[\[\]']/g, '').split(',')[0] : 'Unknown',
         year: +d.year || 1921,
-        genre: genre, // Este CSV não tem genre direto
+        genre: genre,
         popularity: +d.popularity || 50,
-        // Valores já normalizados (0–1)
         danceability: +d.danceability || 0.5,
         energy: +d.energy || 0.5,
         acousticness: +d.acousticness || 0.5,
@@ -134,19 +121,15 @@ function parseMainData(d) {
     };
 }
 
-// Carregar TODOS os datasets
 async function loadData() {
     try {
         
-        // FETCH manual do CSV e parsear com delimitador ;
         const response = await fetch('data/Best Songs on Spotify from 2000-2023.csv');
         const csvText = await response.text();
                 
-        // IMPORTANTE: usar d3.dsvFormat(';') para ponto e vírgula
         const parser = d3.dsvFormat(';');
         const rawData = parser.parse(csvText);
         
-        // Parse manual dos dados
         appState.data = rawData.map(d => ({
             id: Math.random().toString(),
             name: d.title || 'Unknown',
@@ -154,12 +137,11 @@ async function loadData() {
             year: +d.year || 2000,
             genre: (d['top genre'] || 'pop').toLowerCase().trim(),
             popularity: +d.popularity || 50,
-            // IMPORTANTE: dividir por 100 (valores em %)
-            danceability: (+d['danceability '] || 50) / 100, // Nota: tem espaço!
+            danceability: (+d['danceability '] || 50) / 100,
             energy: (+d.energy || 50) / 100,
             acousticness: (+d.acousticness || 50) / 100,
             valence: (+d.valence || 50) / 100,
-            speechiness: (+d['speechiness '] || 5) / 100, // Nota: tem espaço!
+            speechiness: (+d['speechiness '] || 5) / 100,
             instrumentalness: 0,
             loudness: +d.dB || -10,
             tempo: +d.bpm || 120,
@@ -204,8 +186,6 @@ function updateAllVisualizations() {
     
     updateScatterplot();
     updateTimeline();
-    // Radar não precisa atualizar automaticamente
 }
 
-// Iniciar aplicação
 loadData();

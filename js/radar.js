@@ -7,11 +7,9 @@ function createRadarChart() {
     const height = 500;
     const radius = Math.min(width, height) / 2 - 50;
     
-    // Limpar tudo
     d3.select('#radar-chart').selectAll('*').remove();
     d3.select('#artist-select').selectAll('*').remove();
     
-    // Criar interface de seleção
     const artistSelect = d3.select('#artist-select');
     
     artistSelect.append('label')
@@ -22,7 +20,6 @@ function createRadarChart() {
         .style('color', '#1DB954')
         .text('Select artists to compare (max 4):');
     
-    // Container de chips
     artistSelect.append('div')
         .attr('id', 'artist-chips')
         .attr('class', 'selected-artists-chips')
@@ -35,7 +32,6 @@ function createRadarChart() {
         .style('background', 'rgba(42, 42, 42, 0.3)')
         .style('border-radius', '8px');
     
-    // Dropdown
     const dropdown = artistSelect.append('select')
         .attr('id', 'artist-dropdown')
         .style('width', '100%')
@@ -64,7 +60,6 @@ function createRadarChart() {
             this.value = '';
         });
     
-    // Popular dropdown
     const topArtists = getTopArtists(appState.data, 50);
     
     dropdown.append('option')
@@ -79,7 +74,6 @@ function createRadarChart() {
         .attr('value', d => d)
         .text(d => d);
     
-    // Criar SVG do radar
     radarSvg = d3.select('#radar-chart')
         .append('svg')
         .attr('width', width)
@@ -102,7 +96,6 @@ function createRadarChart() {
         .domain([0, 1])
         .range([0, radius]);
     
-    // Círculos de fundo
     for (let i = 1; i <= 5; i++) {
         radarSvg.append('circle')
             .attr('r', radius / 5 * i)
@@ -148,7 +141,6 @@ function updateArtistChips() {
     const chips = chipsContainer.selectAll('.artist-chip')
         .data(selectedArtistsForRadar, d => d);
     
-    // Enter
     const chipEnter = chips.enter()
         .append('div')
         .attr('class', 'artist-chip')
@@ -180,7 +172,6 @@ function updateArtistChips() {
             updateRadarChart();
         });
     
-    // Exit
     chips.exit().remove();
 }
 

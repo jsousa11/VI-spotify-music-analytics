@@ -6,10 +6,8 @@ function createTimeline() {
     const width = 1000 - margin.left - margin.right;
     const height = 300 - margin.top - margin.bottom;
     
-    // Limpar conteúdo anterior (se houver)
     d3.select('#timeline').selectAll('*').remove();
     
-    // Criar SVG
     timelineSvg = d3.select('#timeline')
         .append('svg')
         .attr('width', width + margin.left + margin.right)
@@ -178,17 +176,15 @@ function brushed(event) {
 }
 
 function updateTimeline() {
-    // Recriar timeline com novos dados filtrados
     createTimeline();
 }
 
-// Helper: obter top N géneros por contagem
 function getTopGenresByCount(data, n = 8) {
     // Contar por género
     const genreCounts = d3.rollup(
         data,
-        v => v.length,  // Contar número de músicas
-        d => d.genre    // Agrupar por género
+        v => v.length,
+        d => d.genre
     );
     
     // Ordenar e pegar top N
@@ -200,7 +196,7 @@ function getTopGenresByCount(data, n = 8) {
     
     // FALLBACK
     if (topGenres.length === 0) {
-        console.warn('⚠️ No genres found, using defaults');
+        console.warn('No genres found, using defaults');
         return ['pop', 'rock', 'hip hop', 'electronic', 'latin', 'r&b', 'country', 'jazz'];
     }
     

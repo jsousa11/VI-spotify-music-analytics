@@ -1,13 +1,10 @@
-// Obter géneros únicos (limpar e normalizar)
 function getUniqueGenres(data) {
     const genres = new Set();
     
     data.forEach(d => {
         if (!d.genre || d.genre === 'unknown' || d.genre === '' || d.genre.length < 2) {
-            return; // Skip inválidos
+            return;
         }
-        
-        // Limpar e normalizar
         const cleanGenre = d.genre.toLowerCase().trim();
         
         genres.add(cleanGenre);
@@ -18,7 +15,7 @@ function getUniqueGenres(data) {
     return uniqueGenres;
 }
 
-// Obter artistas únicos (top N por popularidade)
+// Obter artistas únicos
 function getTopArtists(data, n = 100) {
     const artistPopularity = d3.rollup(
         data,
@@ -32,7 +29,7 @@ function getTopArtists(data, n = 100) {
         .map(d => d[0]);
 }
 
-// Agregar dados por ano e género (para timeline)
+// Agregar dados por ano e género
 function aggregateByYearAndGenre(data) {
     const nested = d3.rollups(
         data,

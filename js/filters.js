@@ -46,7 +46,7 @@ function initializeFilters() {
         updateAllVisualizations();
     });
     
-    // Adicionar filtro de ano (novo)
+    // Adicionar filtro de ano
     const yearFilterHTML = `
         <div class="filter-group">
             <h3>Year Range</h3>
