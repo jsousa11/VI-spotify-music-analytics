@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spotify Music Analytics</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <h2>SpotyStats</h2>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#" data-page="energy-danceability" class="active">Energy vs. Danceability</a></li>
+                <li><a href="#" data-page="genre-evolution">Genres Evolution</a></li>
+                <li><a href="#" data-page="variables-evolution">Music Variables Evolution</a></li>
+                <li><a href="#" data-page="artist-comparison">Artist Comparison</a></li>
+                <li><a href="#" data-page="artists">Artist Deep Dive</a></li>
+            </ul>
+
+            <!-- Filters Section (Moved here, visibility toggled by JS) -->
+            <div id="sidebar-filters" class="sidebar-filters">
+                <h3>Filters</h3>
+                <!-- Filter by Genre -->
+                <div class="filter-group">
+                    <h4 class="filter-accordion-header collapsed" id="genre-accordion-header">
+                        Genre
+                        <span class="accordion-icon">▼</span>
+                    </h4>
+                    <div id="genre-filters" class="filter-accordion-content collapsed"></div>
+                </div>
+
+                <!-- Filter by Popularity -->
+                <div class="filter-group filter-popularity">
+                    <h4>Popularity</h4>
+                    <input type="range" id="popularity-slider">
+                    <span id="popularity-value">0+</span>
+                </div>
+                <button id="reset-filters" class="btn-secondary">Reset Filters</button>
+            </div>
+        </nav>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <header class="top-bar">
+                <h1 id="page-title">Energy vs. Danceability with Popularity</h1>
+                <p id="page-subtitle">Exploring the relationship between energy and danceability across genres.</p>
+            </header>
+
+            <div class="content-area">
+                <!-- Page 1: Energy vs Danceability -->
+                <section id="page-energy-danceability" class="page-section active">
+                    <div class="visualization-card full-height">
+                        <h3>Energy vs. Danceability with Popularity</h3>
+                        <div id="scatterplot"></div>
+                    </div>
+                </section>
+
+                <!-- Page 2: Genre Evolution Over Time -->
+                <section id="page-genre-evolution" class="page-section">
+                    <div class="visualization-card full-height">
+                        <h3>Evolution of Number of Songs per Genre</h3>
+                        <div id="timeline"></div>
+                    </div>
+                </section>
+
+                <!-- Page 3: Music Variables Evolution Over Time -->
+                <section id="page-variables-evolution" class="page-section">
+                    <div class="visualization-card full-height">
+                        <h3>Music Variables Evolution</h3>
+                        <div id="variables-timeline"></div>
+                    </div>
+                </section>
+
+
+
+                <!-- Page 4: Artist Profile Comparison -->
+                <section id="page-artist-comparison" class="page-section">
+                    <div class="visualization-card full-height">
+                        <h3>Artist Profile Comparison</h3>
+                        <div id="artist-select-container">
+                            <div id="artist-select">
+                                <!-- Will be filled dynamically -->
+                            </div>
+                        </div>
+                        <div id="radar-chart"></div>
+                    </div>
+                </section>
+
+                <!-- Page 5: Artist Deep Dive -->
+                <section id="page-artists" class="page-section">
+                    <div class="artist-selection-view">
+                        <div id="artist-songs-container">
+                            <!-- Search and Artist Grid injected by JS -->
+                        </div>
+                    </div>
+
+                    <div id="artist-detail-view" class="hidden">
+                        <div id="artist-detail-view-content">
+                            <!-- Detail content injected by JS -->
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- Tooltips (Moved to body to avoid positioning issues with transforms) -->
+    <div id="scatter-tooltip" class="tooltip"></div>
+    <div id="popularity-tooltip" class="tooltip"></div>
+
+    <!-- Custom Modal -->
+    <div id="custom-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <span class="modal-close">&times;</span>
+            <p id="modal-message"></p>
+            <button id="modal-ok-btn" class="btn-secondary">OK</button>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/utils.js"></script>
+    <script src="js/router.js"></script> <!-- New Router -->
+    <script src="js/filters.js"></script>
+    <script src="js/scatterplot.js"></script>
+    <script src="js/timeline.js"></script>
+    <script src="js/variables-timeline.js"></script>
+
+    <script src="js/artist-songs.js"></script>
+    <script src="js/radar.js"></script>
+    <script src="js/main.js"></script>
+</body>
+
+</html>
